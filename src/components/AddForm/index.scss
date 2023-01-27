@@ -1,0 +1,21 @@
+section.add {
+  padding: 30px;
+  background-color: #f9f9f9;
+  .title{
+    margin-bottom: 15px;
+  }  
+  form {
+    max-width: 600px;
+    margin:  0 auto;
+    .input-group{
+      position: relative;
+      margin-bottom: 12px;
+      input {
+        width: 100%;
+        padding: 10px 15px;
+        border: 2px solid #ddd;
+        outline: none;
+      }
+    }
+  }
+}

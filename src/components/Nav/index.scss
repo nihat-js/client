@@ -1,0 +1,18 @@
+nav{
+  background-color: hsl(240, 62%, 21%);
+  color : #fff;
+  padding: 30px 0 ;
+  .container{
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .links {
+        ul {
+          display: flex;
+          gap: 12px;
+        }
+      }
+    }
+  }
+}
