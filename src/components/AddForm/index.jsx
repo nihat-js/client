@@ -21,16 +21,17 @@ const SignupSchema = Yup.object().shape({
 export default function Index() {
   const URL = "http://localhost:4000/products"
 
-  async function add(values) {
+  async function add(values,setSubmitting) {
     toast.dismiss()
     toast("Please wait");
+    setSubmitting(false)
     let result = await axios.post(URL,values)
+    toast.dismiss()
+    setSubmitting(true)
     if (!result){
-      toast.dismiss()
       toast("Error Could not add product. Maybe you entered price wrong ")
     }else{
       toast(` Product  " ${values.name} " added successfully`)
-      toast.dismiss()
     }
   }
 
@@ -46,8 +47,8 @@ export default function Index() {
           price: 0,
         }}
         validationSchema={SignupSchema}
-        onSubmit={values => {
-          add(values)
+        onSubmit={ (values ,{setSubmitting} ) => {
+          add(values,setSubmitting)
         }}
       >
         {({ errors, touched }) => (

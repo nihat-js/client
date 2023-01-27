@@ -14,8 +14,8 @@ export default function Index() {
 
   async function get() {
     let response = await axios.get(URL)
-     setIsLoading(false)
-     setData(response.data)
+    setIsLoading(false)
+    setData(response.data)
   }
 
   useEffect(() => {
@@ -24,26 +24,51 @@ export default function Index() {
 
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [searchValue,setSearchValue] = useState("")
+  const [searchValue, setSearchValue] = useState("")
+  const [sortByPrice, setSortByPrice] = useState(0)
 
-  
-  const URL = "http://localhost:4000/products"
+  const [isPriceMenuActive, setIsPriceMenuActive] = useState(false)
 
-  return (
-    <section className="products">
-      <div className="container">
-        <div className="filter">
-          <div className="search">
-            <input type="text" placeholder='Search Product name ' value={searchValue} onChange={(e)=> setSearchValue(e.target.value) } />
-          </div>
-          <div className="sort">
-            <button> Sort By Id  </button>
-          </div>
+
+  function handleSortByPrice(value) {
+    if (value == 1 || sortByPrice != 1) {
+      setData([...data.sort((a, b) => b.price - a.price)])
+      setSortByPrice(1)
+    } else if (value == -1 || sortByPrice != -1) {
+      setData([...data.sort((a, b) => a.price - b.price)])
+      setSortByPrice(-1)
+    }
+    setIsPriceMenuActive(false)
+  }
+
+
+
+const URL = "http://localhost:4000/products"
+
+return (
+  <section className="products">
+    <div className="container">
+      <div className="filter">
+        <div className="search">
+          <input type="text" placeholder='Search Product name ' value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
         </div>
-        {isLoading ? <div className='spinner'> <span>  </span>  </div> : <div className='row'> {data.map((item, index) => <Box deleteById={deleteById} data={item} key={index} />)} </div>}
-
-
+        <div className="sort">
+          <h2 className="title" onClick={() => setIsPriceMenuActive(!isPriceMenuActive)} > Price  </h2>
+          <div className={`content ${!isPriceMenuActive && 'd-none'} `}>
+            <h4 className= {`item   ${sortByPrice == 1 && 'active'} `} onClick={() => handleSortByPrice(1)} >  High to Low  </h4>
+            <h4 className={`item ${sortByPrice == -1 && 'active'}`} onClick={() => handleSortByPrice(-1)} >  Low to High  </h4>
+        </div>
       </div>
-    </section>
+    </div>
+    {isLoading ? <div className='spinner'> <span>  </span>  </div> :
+
+      <div className='row'>
+        {data.filter(x => x.name.toLowerCase().includes(searchValue.toLocaleLowerCase())).map((item, index) => <Box deleteById={deleteById} data={item} key={index} />)}
+      </div>
+    }
+
+
+  </div>
+    </section >
   )
 }
